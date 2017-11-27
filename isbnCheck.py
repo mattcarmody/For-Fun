@@ -16,12 +16,18 @@ if len(ISBN) == 10:
     total1 = 0
     count = 10
     for i in range(len(ISBN)):
-        total1 += count*int(ISBN[i])
+        if ISBN[i] == 'X':
+            total1 += count*10
+        else:
+            total1 += count*int(ISBN[i])
         count -= 1
     # Second Method - count starts at 1
     total2 = 0
     for i in range(1, len(ISBN)+1):
-        total2 += i*int(ISBN[i-1])
+        if ISBN[i-1] == 'X':
+            total2 += i*10
+        else:
+            total2 += i*int(ISBN[i-1])
     # Does it work?
     if (total1 % 11) == 0 and (total2 % 11) == 0:
         print('This is a valid ISBN-10.')
@@ -29,7 +35,7 @@ if len(ISBN) == 10:
         print('There\'s a problem with the ISBN-10 formulas, they don\'t match.')
     else:
         print('This ISBN-10 doesn\'t add up, it\'s no good. Double check your number.')
-    
+
 # ISBN 13
 elif len(ISBN) == 13:
     totalE = 0
@@ -79,3 +85,5 @@ elif len(ISBN) == 12:
 # Other
 else:
     print('A dead giveaway is the number of digits. That number doesn\'t have 10 or 13. It\'s not an ISBN.')
+
+
