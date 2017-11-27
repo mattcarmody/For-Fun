@@ -60,10 +60,12 @@ elif len(ISBN) == 9:
     for i in range(1, len(ISBN)+1):
         total += i*int(ISBN[i-1])
     # check = (11 - total % 11) * 10 
-    for i in range(10):
+    for i in range(11):
         if (total + 10*i) % 11 == 0:
             check = i
             break
+    if check == 10:
+        check = 'X'
     print('Check digit should be ' + str(check) + ", making the whole ISBN 10: " + ISBN + str(check))
 
 # Entered 12 digits - Give user the ISBN 13 check digit.
@@ -85,5 +87,4 @@ elif len(ISBN) == 12:
 # Other
 else:
     print('A dead giveaway is the number of digits. That number doesn\'t have 10 or 13. It\'s not an ISBN.')
-
 
