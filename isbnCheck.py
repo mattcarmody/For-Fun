@@ -117,13 +117,19 @@ def printer(code):
 def main():
     ISBN = launch()
     if len(ISBN) == 9:
-        printer(complete_isbn_9(ISBN))
-        # double check
+        result9 = complete_isbn_9(ISBN)
+        if check_isbn_10(result9) == "10Y":
+            printer(result9)
+        else:
+            print("Error in calculating or checking ISBN9/10 functions!")
     elif len(ISBN) == 10:
         printer(check_isbn_10(ISBN))
     elif len(ISBN) == 12:
-        printer(complete_isbn_12(ISBN))
-        # double check
+        result12 = complete_isbn_12(ISBN)
+        if check_isbn_13(result12) == "13Y":
+            printer(result12)
+        else:
+            print("Error in calculating or checking ISBN12/13 functions!")
     elif len(ISBN) == 13:
         printer(check_isbn_13(ISBN))
     else:
