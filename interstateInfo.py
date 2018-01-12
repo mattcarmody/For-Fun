@@ -1,81 +1,93 @@
-#! python3
+#! /usr/bin/python3
 # interstateInfo.py - Offers information based on the Interstate naming system.
 
 import sys
 
+inter = input("Enter an Interstate Highway number!")
+inter = inter.lower()
 
-inter = input('Enter an Interstate Highway number!')
-
-# Filter out other characters.
-cut = " -_.,()[]{}iI"
+# Filter out unneeded characters. "I-65" becomes "65"
+cut = " -_.,()[]{}i"
 for i in cut:
     inter = inter.replace(i,"")
 
 # Warn about unexpected characters, not abhiprsu, and stop the program.
-warn = "cdefgjklmnoqtvwxyzCDEFGJKLMNOQTVWXYZ"
+# A - Alaska, BUS - Business, H - Hawai'i, I - Interstate, PR - Puerto Rico
+warn = "cdefgjklmnoqtvwxyz"
 warningMessage = ""
 for i in warn:
     if i in inter:
-        warningMessage = "\nYou've got unexpected letters in your input. Try again. Keep in mind, this program is for interstate numbers not state highways."
+        warningMessage = "\nYou've got unexpected letters in your input. "
+        "Try again. Keep in mind, this program is for interstate numbers not "
+        "state  highways."
 if warningMessage:
     print(warningMessage)
     sys.exit()
 
-# Prefix of H-1 for Hawaii
-if "H" in inter:
-    print('Are you in Hawaii? Must be nice! Bring me a coconut or two.')
-    print('The general rules don\'t really apply in your case, sorry!')
-# Prefix of A and PR for Alaska and Puerto Rico, but they don't follow the rules.
-elif "A" in inter or "a" in inter:
-    print('The Last Frontier is a ways away.')
-    print('The general rules don\'t really apply in your case, sorry!')
-elif "PR" in inter or "pr" in inter or "Pr" in inter or "pR" in inter:
-    print('?Tu estas en Puerto Rico?')
-    print('The general rules don\'t really apply in your case, sorry!')
-# Prefix of BUS for Business, but they don't follow the rules either.
-elif "BUS" in inter or "bus" in inter or "Bus" in inter:
-    print('I don\'t think a business route counts.')
-    print('The general rules don\'t really apply in your case...')
+# Rules don't apply to Hawai'i, Alaska, Puerto Rico or Business
+if "h" in inter:
+    print("Are you in Hawaii? Must be nice! Bring me a coconut or two.\n"
+    "The general rules don't really apply in your case, sorry!")
+elif "a" in inter:
+    print("The Last Frontier is a ways away.\n"
+    "The general rules don't really apply in your case, sorry!")
+elif "pr" in inter:
+    print("?Tu estas en Puerto Rico?\n"
+    "The general rules don't really apply in your case, sorry!")
+elif "bus" in inter:
+    print("I don't think a business route counts.\n"
+    "The general rules don't really apply in your case...")
 else:
-    print('You entered I-' + inter + '.\n')
+    print("You entered I-{0}.\n".format(inter))
 
-    # Inter length of 0.
+    # No number.
     if len(inter) == 0:
-        print('I\'m missing the number, please try again.')
+        print("I'm missing the number, please try again.")
 
-    # If one or two digits - Primary.
+    # If one or two digits - Primary Interstate.
     elif len(inter) < 3:
-        print('This is known as a primary interstate, because it is only one or two digits long.')
+        print("This is known as a primary interstate, "
+        "because it is only one or two digits long.")
         
         # Odd - N/S
         if int(inter) % 2 == 1:
-            print('It runs North to South, because it ends in an odd digit.')
+            print("It runs North to South, because it ends in an odd digit.")
         # Even - E/W
         elif int(inter) % 2 == 0:
-            print('It runs East to West, because it ends in an even digit.')
+            print("It runs East to West, because it ends in an even digit.")
         else:
-            print('Error. Number not even or odd.')
+            print("Error. Number not even or odd.")
 
-        # Ending in 5 or 0 - main line
+        # Ending in 5 or 0 -  Main Line
         if int(inter) % 5 == 0:
-            print('It is considered a main line, because it ends in a 0 or 5. It may run all the way across the country!')
+            print("It is considered a main line, because it ends in a 0 or 5. "
+            "It may run all the way across the country!")
 
-    # If three digits - Auxiliary. They're guidelines with exceptions.
+    # If three digits - Auxiliary.
     elif len(inter) == 3:
-        print('This is an auxiliary route, because it is three digits long. It branches off the primary route that shares the final two digits, in this case I-' + inter[1:3] + '.')
+        print("This is an auxiliary route, because it is three digits long. "
+        "It branches off the primary route that shares the final two digits, "
+        "in this case I-{0}.\n".format(inter[1:3]))
 
         # Third digit odd - Spur.
         if int(inter[0]) % 2 == 1:
-            print('This is also known as a spur route, only connecting to its primary route, I-' + inter[1:3] + ', in one location, evidenced by the odd first digit, ' + inter[0] + '.')
-
-        # Third digit even - Circumferential/Radial of Primary. (They meet twice.)
+            print("This is also known as a spur route, only connecting to "
+            "its primary route, I-{0}, in one location, evidenced by the odd "
+            "first digit, {1}.".format(inter[1:3], inter[0]))
+        # Third digit even - Circumferential/Radial of Primary.
         elif int(inter[0]) % 2 == 0:
-            print('This is also known as a circumferential or radial route, connecting to the primary route, I-' + inter[1:3] + ', in two locations, evidenced by the even first digit, ' + inter[0] + '.')
-
-        # East/West North/South of final digit doesn't necessarily apply.
+            print("This is also known as a circumferential or radial route, "
+            "connecting to the primary route, I-{0}, in two locations, "
+            "evidenced by the even first digit, {1}.".format(inter[1:3], 
+            inter[0]))
 
     # Disclaimer, exceptions.
-    print('\nThe Interstate Highway System names are structured and contain a lot of information about the road you\'re on! Unfortunately exceptions exist, casting doubt on the \'rules\'. These guidelines aren\'t 100% accurate, but they\'re widespread.')
+    print("\nThe Interstate Highway System names are structured and contain "
+    "a lot of information about the road you're on! Unfortunately "
+    "exceptions exist, casting doubt on the 'rules'. "
+    "These guidelines aren't 100% accurate, but they're widespread.")
+    # Primary bonus - increment miles from S/W state boundary
     if len(inter) < 3 and len(inter) > 0:
-        print('\nBonus tip! On primary routes, exit numbers usually increment with each mile, with 0 at either the West or South border of a state, depending on which way the Interstate runs.')
-    
+        print("\nBonus tip! On primary routes, exit numbers usually increment "
+        "with each mile, with 0 at either the West or South border of a state, "
+        "depending on which way the Interstate runs.")
