@@ -1,22 +1,23 @@
-#! python3
+#! /usr/bin/python3
 # isbnCheck.py - A simple check to see if an ISBN number is potentially valid.
+# If one digit is missing, it provides the final digit.
+# Works with ISBN 10 and ISBN 13.
 
-
-ISBN = input('Enter an ISBN number.')
+ISBN = input("Enter an ISBN number.")
 
 # Remove unnecessary characters here.
 cut = " []{}(),.-_"
 for i in cut:
     ISBN = ISBN.replace(i,"")
-print('You entered ' + ISBN)
+print("You entered {0}".format(ISBN))
 
-# ISBN 10
+# ISBN 10 - uses two methods for redundancy
 if len(ISBN) == 10:
     # First Method - count starts at 10
     total1 = 0
     count = 10
     for i in range(len(ISBN)):
-        if ISBN[i] == 'X':
+        if ISBN[i] == "X":
             total1 += count*10
         else:
             total1 += count*int(ISBN[i])
@@ -24,17 +25,18 @@ if len(ISBN) == 10:
     # Second Method - count starts at 1
     total2 = 0
     for i in range(1, len(ISBN)+1):
-        if ISBN[i-1] == 'X':
+        if ISBN[i-1] == "X":
             total2 += i*10
         else:
             total2 += i*int(ISBN[i-1])
     # Does it work?
     if (total1 % 11) == 0 and (total2 % 11) == 0:
-        print('This is a valid ISBN-10.')
+        print("This is a valid ISBN-10.")
     elif (total1 % 11) == 0 or (total2 % 11) == 0:
-        print('There\'s a problem with the ISBN-10 formulas, they don\'t match.')
+        print("There's a problem with the ISBN-10 formulas, they don't match.")
     else:
-        print('This ISBN-10 doesn\'t add up, it\'s no good. Double check your number.')
+        print("This ISBN-10 doesn't add up, it's no good. "
+        "Double check your number.")
 
 # ISBN 13
 elif len(ISBN) == 13:
@@ -50,9 +52,9 @@ elif len(ISBN) == 13:
         totalO += int(odd[i])
     # Modulus 10 the complete total, 0 is valid
     if (totalE + totalO) % 10 == 0:
-        print('This is a valid ISBN-13.')
+        print("This is a valid ISBN-13.")
     else:
-        print('That IBSN-13 doesn\'t seem quite right.')
+        print("That IBSN-13 doesn't seem quite right.")
     
 # Entered 9 digits - Give user the ISBN 10 check digit.
 elif len(ISBN) == 9:
@@ -65,8 +67,9 @@ elif len(ISBN) == 9:
             check = i
             break
     if check == 10:
-        check = 'X'
-    print('Check digit should be ' + str(check) + ", making the whole ISBN 10: " + ISBN + str(check))
+        check = "X"
+    print("Check digit should be {0}, making the whole "
+    "ISBN 10: {1}{2}".format(check, ISBN, check))
 
 # Entered 12 digits - Give user the ISBN 13 check digit.
 elif len(ISBN) == 12:
@@ -82,9 +85,10 @@ elif len(ISBN) == 12:
         totalO += int(odd[i])
     # Find check value and print.
     check = 10 - (totalE + totalO) % 10
-    print('Check digit should be ' + str(check) + ", making the whole ISBN 13: " + ISBN + str(check))
+    print("Check digit should be {0}, making the whole "
+    "ISBN 13: {1}{2}".format(check, ISBN, check))
     
 # Other
 else:
-    print('A dead giveaway is the number of digits. That number doesn\'t have 10 or 13. It\'s not an ISBN.')
-
+    print("A dead giveaway is the number of digits. That number doesn't have "
+    "10 or 13. It's not an ISBN.")
