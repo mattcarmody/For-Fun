@@ -92,19 +92,19 @@ def complete_isbn_12(isbn12):
     check = 10 - (evenTotal12 + oddTotal12) % 10
     return str(isbn12) + str(check)
     
+codeDict = {"10Y": "This is a valid ISBN-10.",
+            "10N": "There's a problem with the ISBN-10 formulas, they don't "
+                "match.",
+            "10E": "This ISBN-10 doesn't add up, it's no good. "
+                "Double check your number.",
+            "13Y": "This is a valid ISBN-13.",
+            "13N": "That IBSN-13 doesn't seem quite right.",
+            }
+    
 # Prints the results for all functions.
 def printer(code):
-    if code == "10Y": 
-        print("This is a valid ISBN-10.")
-    elif code == "10N":
-        print("There's a problem with the ISBN-10 formulas, they don't match.")
-    elif code == "10E":
-        print("This ISBN-10 doesn't add up, it's no good. "
-            "Double check your number.")
-    elif code == "13Y":
-        print("This is a valid ISBN-13.")
-    elif code == "13N":
-        print("That IBSN-13 doesn't seem quite right.")
+    if code in codeDict:
+        print(codeDict[code])
     elif len(code) == 10:
         print("Check digit should be {0}, making the whole "
             "ISBN 10: {1}{2}".format(code[9], code[0:9], code[9]))
@@ -133,8 +133,8 @@ def main():
     elif len(ISBN) == 13:
         printer(check_isbn_13(ISBN))
     else:
-        print("A dead giveaway is the number of digits. That number doesn't have "
-            "10 or 13. It's not an ISBN.")
+        print("A dead giveaway is the number of digits. That number doesn't "
+            "have 10 or 13. It's not an ISBN.")
 
 if __name__ == "__main__":
     main()
